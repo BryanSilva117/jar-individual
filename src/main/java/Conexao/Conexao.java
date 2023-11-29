@@ -13,7 +13,7 @@ public class Conexao {
 
         //MYSQL
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        dataSource.setUrl("jdbc:mysql://localhost:3306/performee");
+        dataSource.setUrl("jdbc:mysql://0.0.0.0:3306/performee?autoReconnect=true&useSSL=false");
         dataSource.setUsername("root");
         dataSource.setPassword("001performee");
 
