@@ -651,19 +651,6 @@ public class DaoDados {
         Conexao conexao = new Conexao();
         JdbcTemplate con = conexao.getConexaoDoBanco();
         JdbcTemplate conServer = conexao.getConexaoDoBancoServer();
-        JSONObject json = new JSONObject();
-        JSONObject json2 = new JSONObject();
-
-        //CPU
-        Double mediaUsoCpu = con.queryForObject("SELECT ROUND(AVG(emUso), 2) AS media_ultimas_10_leituras\n" +
-                "FROM (\n" +
-                "    SELECT emUso\n" +
-                "    FROM leitura AS l\n" +
-                "    JOIN componente AS c ON c.idComponente = l.fkComponente \n" +
-                "    WHERE c.tipo = 'CPU' AND l.fkServidor = ?\n" +
-                "    ORDER BY l.idLeitura DESC\n" +
-                "    LIMIT 10\n" +
-                ") AS ultimas_leituras;", Double.class, ipServidor);
 
         Double mediaUsoCpuServer = conServer.queryForObject("SELECT ROUND(AVG(emUso), 2) AS media_ultimas_10_leituras\n" +
                 "FROM (\n" +
@@ -672,16 +659,6 @@ public class DaoDados {
                 "    JOIN componente AS c ON c.idComponente = l.fkComponente \n" +
                 "    WHERE c.tipo = 'CPU' AND l.fkServidor = ?\n" +
                 "    ORDER BY l.idLeitura DESC\n" +
-                ") AS ultimas_leituras;", Double.class, ipServidor);
-
-        Double temperatura = con.queryForObject("SELECT ROUND(AVG(temperatura), 2) AS media_ultimas_10_leituras\n" +
-                "FROM (\n" +
-                "    SELECT temperatura\n" +
-                "    FROM leitura AS l\n" +
-                "    JOIN componente AS c ON c.idComponente = l.fkComponente \n" +
-                "    WHERE c.tipo = 'CPU' AND l.fkServidor = ?\n" +
-                "    ORDER BY l.idLeitura DESC\n" +
-                "    LIMIT 10\n" +
                 ") AS ultimas_leituras;", Double.class, ipServidor);
 
         Double temperaturaServer = conServer.queryForObject("SELECT ROUND(AVG(temperatura), 2) AS media_ultimas_10_leituras\n" +
@@ -717,7 +694,7 @@ public class DaoDados {
                 "ORDER BY l.idLeitura DESC;\n", Integer.class, ipServidor);
 
 
-        if (mediaUsoCpu >= 85 && mediaUsoCpuServer >= 85) {
+        if (mediaUsoCpuServer >= 85) {
             descricao = String.format("Alerta de Risco. Servidor %s: A utilização da %s esteve constantemente acima de 85%%, nas últimas %d verificações. Pode ocorrer Travamentos! Média de utilização: %.2f%%", ipServidor, componente, dias, mediaUsoCpuServer);
 
             tipo = "Em risco";
@@ -731,7 +708,7 @@ public class DaoDados {
             setLog(logAlerta);
 
 
-        } else if (mediaUsoCpu >= 66 && mediaUsoCpu <= 84 && mediaUsoCpuServer >= 66 && mediaUsoCpuServer <= 84) {
+        } else if (mediaUsoCpuServer >= 66 && mediaUsoCpuServer <= 84) {
             descricao = String.format("Alerta de Cuidado. Servidor %s: A utilização da %s esteve constantemente entre 66%% a 84%%, nas últimas %d verificações. Pode ocorrer lentidão! Média de utilização: %.2f%%", ipServidor, componente, dias, mediaUsoCpuServer);
 
             tipo = "Cuidado";
@@ -755,7 +732,7 @@ public class DaoDados {
         }
 
 
-        if (temperatura > 39 && temperaturaServer > 39) {
+        if ( temperaturaServer > 39) {
             descricao2 = String.format("Alerta de Risco. Servidor %s: A Temperatura da %s está acima de 39°C, nas últimas %d verificações! Risco de Super Aquecimento!. Média de temperatura: %.2f°C", ipServidor, componente, dias, temperaturaServer);
 
             tipo = "Em risco";
@@ -769,7 +746,7 @@ public class DaoDados {
             setLog(logAlerta);
 
 
-        } else if (temperatura >= 35 && temperatura <= 39 && temperaturaServer >= 35 && temperaturaServer <= 39) {
+        } else if (temperaturaServer >= 35 && temperaturaServer <= 39) {
             descricao2 = String.format("Alerta de Cuidado. Servidor %s: A Temperatura da %s está entre 35°C a 39°C, nas últimas %d verificações. Pode ocorrer aquecimento! média de temperatura: %.2f°C", ipServidor, componente, dias, temperaturaServer);
 
             tipo = "Cuidado";
@@ -788,6 +765,9 @@ public class DaoDados {
 
             con.update("insert into Alerta(dataAlerta, tipo, descricao, fkEmpresa, fkDataCenter, fkServidor, fkComponente, fkLeitura) values (now(),?,?,?,?,?,?,?)", tipo, descricao, fkEmpresa, fkDataCenter, ipServidor, fkCpu, fkLeitura);
             conServer.update("insert into Alerta(dataAlerta, tipo, descricao, fkEmpresa, fkDataCenter, fkServidor, fkComponente, fkLeitura) values (GETDATE(),?,?,?,?,?,?,?)", tipo, descricao, fkEmpresaServer, fkDataCenterServer, ipServidor, fkCpuServer, fkLeituraServer);
+
+
+            System.out.println("CHEGOUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU");
 
         }
 
