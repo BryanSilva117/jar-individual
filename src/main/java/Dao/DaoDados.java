@@ -677,8 +677,7 @@ public class DaoDados {
         System.out.println("passou pela temperatura");
 
 
-        Integer fkCpu = 1;
-//                con.queryForObject("select idComponente from componente where tipo = 'CPU' and fkServidor = '34543545454545'", Integer.class);
+        Integer fkCpu = con.queryForObject("select idComponente from Componente where tipo = \"CPU\" and fkServidor = ?", Integer.class, ipServidor);
 
         System.out.println("passou pela fkCpu");
 
