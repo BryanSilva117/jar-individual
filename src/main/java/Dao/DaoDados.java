@@ -652,6 +652,8 @@ public class DaoDados {
         JdbcTemplate con = conexao.getConexaoDoBanco();
         JdbcTemplate conServer = conexao.getConexaoDoBancoServer();
 
+        System.out.println("Entrou ");
+
         Double mediaUsoCpuServer = conServer.queryForObject("SELECT ROUND(AVG(emUso), 2) AS media_ultimas_10_leituras\n" +
                 "FROM (\n" +
                 "    SELECT TOP 10 emUso\n" +
@@ -660,6 +662,8 @@ public class DaoDados {
                 "    WHERE c.tipo = 'CPU' AND l.fkServidor = ?\n" +
                 "    ORDER BY l.idLeitura DESC\n" +
                 ") AS ultimas_leituras;", Double.class, ipServidor);
+
+        System.out.println("passou pela mediaUso");
 
         Double temperaturaServer = conServer.queryForObject("SELECT ROUND(AVG(temperatura), 2) AS media_ultimas_10_leituras\n" +
                 "FROM (\n" +
@@ -670,9 +674,14 @@ public class DaoDados {
                 "    ORDER BY l.idLeitura DESC\n" +
                 ") AS ultimas_leituras;", Double.class, ipServidor);
 
+        System.out.println("passou pela temperatura");
+
 
         Integer fkCpu = con.queryForObject("select idComponente from componente where tipo = 'CPU' and fkServidor = ?", Integer.class, ipServidor);
+
+        System.out.println("passou pela fkCpu");
         Integer fkCpuServer = conServer.queryForObject("select idComponente from componente where tipo = 'CPU' and fkServidor = ?", Integer.class, ipServidor);
+        System.out.println("passou pela fkCpuServer");
 
         String componente = "CPU";
         String tipo;
@@ -686,6 +695,7 @@ public class DaoDados {
                 "\t\tWHERE c.tipo = 'CPU' and l.fkServidor = ?\n" +
                 "\t\t\tORDER BY l.idLeitura DESC\n" +
                 "\t\t\t\tLIMIT 1;", Integer.class, ipServidor);
+        System.out.println("passou pela fkLeitura");
 
         Integer fkLeituraServer = conServer.queryForObject("SELECT TOP 1 idLeitura\n" +
                 "FROM leitura AS l\n" +
@@ -693,7 +703,7 @@ public class DaoDados {
                 "WHERE c.tipo = 'CPU' AND l.fkServidor = ?\n" +
                 "ORDER BY l.idLeitura DESC;\n", Integer.class, ipServidor);
 
-        System.out.println(mediaUsoCpuServer+temperaturaServer+fkCpu+fkCpuServer+ fkLeituraServer+ fkLeitura);
+        System.out.println("passou pela fkLeituraServer");
 
         if (mediaUsoCpuServer >= 85) {
             descricao = String.format("Alerta de Risco. Servidor %s: A utilização da %s esteve constantemente acima de 85%%, nas últimas %d verificações. Pode ocorrer Travamentos! Média de utilização: %.2f%%", ipServidor, componente, dias, mediaUsoCpuServer);
