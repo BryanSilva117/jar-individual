@@ -693,6 +693,7 @@ public class DaoDados {
                 "WHERE c.tipo = 'CPU' AND l.fkServidor = ?\n" +
                 "ORDER BY l.idLeitura DESC;\n", Integer.class, ipServidor);
 
+        System.out.println(mediaUsoCpuServer+temperaturaServer+fkCpu+fkCpuServer+ fkLeituraServer+ fkLeitura);
 
         if (mediaUsoCpuServer >= 85) {
             descricao = String.format("Alerta de Risco. Servidor %s: A utilização da %s esteve constantemente acima de 85%%, nas últimas %d verificações. Pode ocorrer Travamentos! Média de utilização: %.2f%%", ipServidor, componente, dias, mediaUsoCpuServer);
@@ -737,9 +738,9 @@ public class DaoDados {
 
             tipo = "Em risco";
 
-            con.update("insert into Alerta(dataAlerta, tipo, descricao, fkEmpresa, fkDataCenter, fkServidor, fkComponente, fkLeitura) values (now(),?,?,?,?,?,?,?)", tipo, descricao, fkEmpresa, fkDataCenter, ipServidor, fkCpu, fkLeitura);
+            con.update("insert into Alerta(dataAlerta, tipo, descricao, fkEmpresa, fkDataCenter, fkServidor, fkComponente, fkLeitura) values (now(),?,?,?,?,?,?,?)", tipo, descricao2, fkEmpresa, fkDataCenter, ipServidor, fkCpu, fkLeitura);
 
-            conServer.update("insert into Alerta(dataAlerta, tipo, descricao, fkEmpresa, fkDataCenter, fkServidor, fkComponente, fkLeitura) values (GETDATE(),?,?,?,?,?,?,?)", tipo, descricao, fkEmpresaServer, fkDataCenterServer, ipServidor, fkCpuServer, fkLeituraServer);
+            conServer.update("insert into Alerta(dataAlerta, tipo, descricao, fkEmpresa, fkDataCenter, fkServidor, fkComponente, fkLeitura) values (GETDATE(),?,?,?,?,?,?,?)", tipo, descricao2, fkEmpresaServer, fkDataCenterServer, ipServidor, fkCpuServer, fkLeituraServer);
 
             String logAlerta = """
                     : Usuário do IP %s, hostName: %s. Teve %s""".formatted(ipUser, hostNameUser, descricao2);
@@ -751,8 +752,8 @@ public class DaoDados {
 
             tipo = "Cuidado";
 
-            con.update("insert into Alerta(dataAlerta, tipo, descricao, fkEmpresa, fkDataCenter, fkServidor, fkComponente, fkLeitura) values (now(),?,?,?,?,?,?,?)", tipo, descricao, fkEmpresa, fkDataCenter, ipServidor, fkCpu, fkLeitura);
-            conServer.update("insert into Alerta(dataAlerta, tipo, descricao, fkEmpresa, fkDataCenter, fkServidor, fkComponente, fkLeitura) values (GETDATE(),?,?,?,?,?,?,?)", tipo, descricao, fkEmpresaServer, fkDataCenterServer, ipServidor, fkCpuServer, fkLeituraServer);
+            con.update("insert into Alerta(dataAlerta, tipo, descricao, fkEmpresa, fkDataCenter, fkServidor, fkComponente, fkLeitura) values (now(),?,?,?,?,?,?,?)", tipo, descricao2, fkEmpresa, fkDataCenter, ipServidor, fkCpu, fkLeitura);
+            conServer.update("insert into Alerta(dataAlerta, tipo, descricao, fkEmpresa, fkDataCenter, fkServidor, fkComponente, fkLeitura) values (GETDATE(),?,?,?,?,?,?,?)", tipo, descricao2, fkEmpresaServer, fkDataCenterServer, ipServidor, fkCpuServer, fkLeituraServer);
 
             String logAlerta = """
                     : Usuário do IP %s, hostName: %s. Teve %s""".formatted(ipUser, hostNameUser, descricao2);
@@ -763,8 +764,8 @@ public class DaoDados {
 
             tipo = "Estável";
 
-            con.update("insert into Alerta(dataAlerta, tipo, descricao, fkEmpresa, fkDataCenter, fkServidor, fkComponente, fkLeitura) values (now(),?,?,?,?,?,?,?)", tipo, descricao, fkEmpresa, fkDataCenter, ipServidor, fkCpu, fkLeitura);
-            conServer.update("insert into Alerta(dataAlerta, tipo, descricao, fkEmpresa, fkDataCenter, fkServidor, fkComponente, fkLeitura) values (GETDATE(),?,?,?,?,?,?,?)", tipo, descricao, fkEmpresaServer, fkDataCenterServer, ipServidor, fkCpuServer, fkLeituraServer);
+            con.update("insert into Alerta(dataAlerta, tipo, descricao, fkEmpresa, fkDataCenter, fkServidor, fkComponente, fkLeitura) values (now(),?,?,?,?,?,?,?)", tipo, descricao2, fkEmpresa, fkDataCenter, ipServidor, fkCpu, fkLeitura);
+            conServer.update("insert into Alerta(dataAlerta, tipo, descricao, fkEmpresa, fkDataCenter, fkServidor, fkComponente, fkLeitura) values (GETDATE(),?,?,?,?,?,?,?)", tipo, descricao2, fkEmpresaServer, fkDataCenterServer, ipServidor, fkCpuServer, fkLeituraServer);
 
 
             System.out.println("CHEGOUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU");
