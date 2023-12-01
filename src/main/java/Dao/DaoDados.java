@@ -679,7 +679,8 @@ public class DaoDados {
 
         Integer fkCpu = con.queryForObject("select idComponente from Componente where tipo = \"CPU\" and fkServidor = ?", Integer.class, ipServidor);
 
-        System.out.println("passou pela fkCpu");
+        System.out.println("passou pela ESSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS");
+        System.out.println("fkCPU " + fkCpu);
 
         Integer fkCpuServer = conServer.queryForObject("select idComponente from Componente where tipo = 'CPU' and fkServidor = ?", Integer.class, ipServidor);
         System.out.println("passou pela fkCpuServer");
