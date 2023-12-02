@@ -694,7 +694,7 @@ public class DaoDados {
         Integer fkLeitura = con.queryForObject("SELECT idLeitura \n" +
                 "FROM leitura as l\n" +
                 "\tJOIN componente as c ON c.idComponente = l.fkComponente \n" +
-                "\t\tWHERE c.tipo = 'CPU' and l.fkServidor = ?\n" +
+                "\t\tWHERE c.tipo = \"CPU\" and l.fkServidor = ?\n" +
                 "\t\t\tORDER BY l.idLeitura DESC\n" +
                 "\t\t\t\tLIMIT 1;", Integer.class, ipServidor);
         System.out.println("passou pela fkLeitura");
@@ -744,6 +744,7 @@ public class DaoDados {
             conServer.update("insert into Alerta(dataAlerta, tipo, descricao, fkEmpresa, fkDataCenter, fkServidor, fkComponente, fkLeitura) values (GETDATE(),?,?,?,?,?,?,?)", tipo, descricao, fkEmpresaServer, fkDataCenterServer, ipServidor, fkCpuServer, fkLeituraServer);
         }
 
+        System.out.println("PASSOUUUUUUUUUU");
 
         if ( temperaturaServer > 39) {
             descricao2 = String.format("Alerta de Risco. Servidor %s: A Temperatura da %s está acima de 39°C, nas últimas %d verificações! Risco de Super Aquecimento!. Média de temperatura: %.2f°C", ipServidor, componente, dias, temperaturaServer);
