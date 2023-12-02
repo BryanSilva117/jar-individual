@@ -692,8 +692,8 @@ public class DaoDados {
         Integer dias = 10;
 
         Integer fkLeitura = con.queryForObject("SELECT idLeitura \n" +
-                "FROM leitura as l\n" +
-                "\tJOIN componente as c ON c.idComponente = l.fkComponente \n" +
+                "FROM Leitura as l\n" +
+                "\tJOIN Componente as c ON c.idComponente = l.fkComponente \n" +
                 "\t\tWHERE c.tipo = \"CPU\" and l.fkServidor = ?\n" +
                 "\t\t\tORDER BY l.idLeitura DESC\n" +
                 "\t\t\t\tLIMIT 1;", Integer.class, ipServidor);
